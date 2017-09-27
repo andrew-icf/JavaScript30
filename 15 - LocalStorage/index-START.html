@@ -28,11 +28,51 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  // On pageLoad we are checking if there is someting in localStorage
+  const items = JSON.parse(localStorage.getItem('items')) || [];
 
+  function addItem(e) {
+      e.preventDefault();
+      const text = (this.querySelector('[name=item]')).value; // the whole parenthesis will give us the input and then input has value() method on it
+
+      const item = {
+          text, // remember this is just the es6 shorthand property
+          done: false
+      }
+      items.push(item);
+      populateList(items, itemsList);
+      // localStorage simply a key - value store that you may only use strings
+      // Adding an item to localStorage
+      localStorage.setItem('items', JSON.stringify(items)); //items is the key from application in devtools
+      this.reset(); // this is a form element and they have a reset() method
+  }
+
+  function populateList(plates = [], platesList) { //using different names here just incase we are using any list and any destination
+      platesList.innerHTML = plates.map((plate, i) => {
+          return `
+            <li>
+                <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+                <label for="item${i}">${plate.text}</label>
+            </li>
+          `;
+      }).join(''); //taking the array that map() makes and turning it into one big string
+  }
+
+  function toggleDone(e) {
+      //skip this unless it's an input
+      if (!e.target.matches('input')) return; // matches() is new on the browser
+      const el = e.target;
+      const index = el.dataset.index;
+      items[index].done = !items[index].done;
+      localStorage.setItem('items', JSON.stringify(items));
+      populateList(items, itemsList);
+  }
+
+  addItems.addEventListener('submit', addItem); // will listen for enter key, and click
+  itemsList.addEventListener('click', toggleDone);
+  populateList(items, itemsList);
 </script>
 
 
 </body>
 </html>
-
