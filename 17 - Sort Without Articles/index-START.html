@@ -46,6 +46,19 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+function strip(bandName) {
+    // regex the carrot ^ means if it starts with 'i' stands for insensitive to casing and we are replacing it with nothing
+  return bandName.replace(/^(a |the |an )/i, '').trim();
+}
+
+const sortedBands = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
+
+document.getElementById('bands').innerHTML =
+    sortedBands
+        .map(band => `<li>${band}</li>`) //map returns an array so we want to join it into one big string otherwise you get comma's due to toString in the map
+        .join('');
+
+console.log(sortedBands);
 
 </script>
 
