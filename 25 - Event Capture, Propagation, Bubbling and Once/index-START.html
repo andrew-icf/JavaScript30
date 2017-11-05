@@ -39,7 +39,21 @@
 
 <button></button>
 <script>
+// Capture fires from the top down into your nested elements then when the event fires
+// It will bubble back up
+    const divs = document.querySelectorAll('div');
 
+    function logText(e) {
+        console.log(this.classList.value);
+        // stop bubbling this event up, also works with capture (when set to true will print out 'one')
+        // e.stopPropagation();
+    }
+// {capture: true} will fire the function on the way down rather than on the way up, default is set to false
+    divs.forEach(div => div.addEventListener('click', logText, {
+        capture: false,
+        // once is good for a button in store checkouts where you want them to only click once
+        once: true // it will listen for the click and then un bind itself => same as saying div.removeEventListener etc...
+    }));
 </script>
 </body>
 </html>
