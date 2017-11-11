@@ -230,6 +230,7 @@
         const dropdownCoords = dropdown.getBoundingClientRect();
         const navCoords = nav.getBoundingClientRect();
 
+        // you won't need bottom on coords, just top and left from what nav provides
         const coords = {
             height : dropdownCoords.height,
             width : dropdownCoords.width,
